@@ -26,3 +26,4 @@ R2
 5. The process is then continued by adding new samples into the data bank. The proxy's training is then conducted with the new data bank - to improve the model's predictive ability to prevent overestimation. The computation continues until there is no longer (reasonably large) difference between the proxy and reservoir simulator NPV values.
 
 All components used in the framework are located the [lib](https://github.com/ncuxomun/Optimization-project/tree/master/lib) folder.
+For simulation files please refer to [Simulations](https://github.com/ncuxomun/Optimization-project/tree/master/Simulations) folder.
