@@ -1,1 +1,6 @@
-# Optimization project
+# Framework components
+
+1. [Data Module](https://github.com/ncuxomun/Optimization-project/blob/master/lib/data_module.py) - takes care of data loading given a dataset. The received dataset is then split into Training, Validation, and Testing dataloaders, respectively. The data split will follow the seed value if provided, otherwise it will be randomly initialized for each run.
+2. [Optimization Module](https://github.com/ncuxomun/Optimization-project/blob/master/lib/optim_module.py) - provides optimization package that incorporates Jacobian and Hessian matrices with respect to the control variable, which are then utilized in the minimization function provided by scipy library. Note that since we are interested in maximizing NPV, the negative NPV value is thus minimized.
+3. [Proxy model](https://github.com/ncuxomun/Optimization-project/blob/master/lib/proxy_model.py) - Forward function that takes in (normalized) controls and outputs (normalized) NPV values. The proxy is based on 1D convolutional layers. The idea is that each well has one signal over time, thus the convolutional operations will have to consider all four signals "to make sense" of the incoming control signal.
+4. [Train function](https://github.com/ncuxomun/Optimization-project/blob/master/lib/train_function.py) - Combines data module and proxy training. The function helps keep modules neat in the framework.
