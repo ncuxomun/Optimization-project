@@ -1,0 +1,307 @@
+--*******************************************
+--Test run on 100x100x1 simulation grid
+
+RUNSPEC
+TITLE
+Gaussian Dataset Test
+
+DIMENS
+100 100 1 /
+
+FIELD
+
+AQUDIMS
+1  /
+
+WELLDIMS
+--max	  connection	grps	max well
+--no well  per well		in grp	 		
+   4       20   	2   	4  /
+   
+OIL
+
+WATER
+
+REGDIMS
+--Max FIP  No of set  
+10  10  /
+
+AQUDIMS
+--maxlines  maxconnect  CTmax  CTrow  NoAnalAq  NCAMAX  MXNALI  MXAAQL
+  4*                                     1      1000    2        2   /
+
+START
+1 JAN  2021 /
+
+DEFINES
+'P1_PRS_21_1' 1250 1325 1500 REAL/
+'P2_PRS_21_1' 1250 1325 1500 REAL/
+'P3_PRS_21_1' 1250 1325 1500 REAL/
+'I1_RTE_21_1' 4250 3000 5500 REAL/
+/
+
+INCLUDE
+CONTROL_VARIABLES.INC /
+
+UNIFOUT
+
+NSTACK
+50 /
+
+--*******************************************
+GRID
+
+NOECHO
+
+INCLUDE 
+GD.GRDECL /
+
+ECHO 
+
+INCLUDE
+PORO.INC /
+
+
+INCLUDE
+PERM.INC /
+
+COPY
+PERMX PERMY /
+PERMX PERMZ /
+/
+
+MULTIPLY
+PERMZ 0.1  /
+/
+
+RPTGRID
+ALLNNC PORV  /
+
+GRIDFILE
+0  1 /
+
+INIT
+
+--*******************************************
+EDIT
+
+--*******************************************
+PROPS
+
+PVCDO
+--Pb  Bo  Co  Visc  
+--1500 1.26  6E-6  0.5   /
+1100 1.26  6E-6  0.5   /
+
+RSCONST
+--Rs  Pb
+0.656 800  /
+
+PVTW
+--Pref Bref Cw Vw (dVw/dp)/Vw
+2500 1.03 0.000003 0.4  0 /
+
+GRAVITY
+--OIL  WATER  GAS
+32  1.05  .7  /
+
+ROCK
+--Pref  Cp
+2500  3.5E-6 /
+
+SWOF
+--Sw Krw Pcow
+0.2	 0     0.9   4 
+0.3  0.05  0.75  2 
+0.4  0.1   0.55  1 
+0.5  0.18  0.3   0.5 
+0.6  0.28  0.1   0.2 
+0.7  0.4   0     0.1 
+1    1     0     0 
+/
+
+--*******************************************
+REGIONS
+
+--*******************************************
+SOLUTION
+
+--RPTMAPD
+--1  JUL  2014 /
+--1  JAN  2015 /
+--1  JUL  2015 /
+--1  JAN  2016 /
+--1  JUL  2016 /
+--1  JAN  2017 /
+--1  JUL  2017 /
+--1  JAN  2018 /
+--1  JUL  2018 /
+--1  JAN  2019 /
+--1  JUL  2019 /
+--1  JAN  2020 /
+--1  JUL  2020 /
+--1  JAN  2021 /
+--1  JUL  2021 /
+--1  JAN  2022 /
+--1  JUL  2022 /
+--1  JAN  2023 /
+--1  JUL  2023 /
+--1  JAN  2024 /
+--1  JUL  2024 /
+--1  JAN  2025 /
+--1  JUL  2025 /
+--1  JAN  2026 /
+--1  JUL  2026 /
+--1  JAN  2027 /
+--1  JUL  2027 /
+--1  JAN  2028 /
+--1  JUL  2028 /
+--1  JAN  2029 /
+--1  JUL  2029 /
+--1  JUL  2029 /
+--1  JAN  2030 /
+--1  JUL  2030 /
+--1  JAN  2031 /
+--1  JUL  2032 /
+--1  JAN  2033 /
+--1  JUL  2034 /
+--1  JAN  2034 /
+--/
+--
+
+EQUIL
+--depth Pres WOC/GOC PcWOC  GOC  PcGOC 
+  3285  2500 3305	     /
+
+--RPTSOL
+--'RESTART=2' 'FIP=1' /
+
+--*******************************************
+SUMMARY
+
+INCLUDE
+SUMMARY.INC /
+
+--*******************************************
+SCHEDULE
+
+--RPTONLY
+
+--RPTSCHED
+--'RESTART=2' 'FIP=3' 'WELLS=2' 'NEWTON' 'SUMMARY' /
+
+WELSPECS
+--name grp    I   J     depth   phase   rad
+  P1	OP   1     100  3300    OIL     -1  /
+  P2	OP   1     1    3300	OIL		-1	/
+  P3	OP   100   1    3300	OIL		-1	/
+  I1 	WI   100   100  3300 	WATER 	-1	/
+/
+
+COMPDAT
+--name   I     J    Kup Klow  Flag   diam
+  P1	 1       100   1	1	  OPEN	2*  0.583 	/
+  P2	 1       1     1	1	  OPEN	2*  0.583 	/	 
+  P3	 100     1     1	1	  OPEN	2*  0.583 	/
+  I1 	 100     100   1	1 	  OPEN 	2*  0.583 	/
+/
+
+WCONPROD
+--name flag  cntrl  OratT WatT  GasT  LiqT   ResvT  BHPT  THPT
+P1   OPEN   BHP   5*                             @P1_PRS_21_1@  /
+P2   OPEN   BHP   5*                             @P2_PRS_21_1@  /
+P3   OPEN   BHP   5*                             @P3_PRS_21_1@  /
+/
+
+WCONINJE
+--name  type   flag   cntrl   pres/surfaceQ --1500
+I1   WATER    OPEN    RATE   @I1_RTE_21_1@  1* 10000 /
+/
+
+INCLUDE
+CONTROL_SCHEDULE.INC /
+-- for 3 months freq
+--CONTROL_SCHEDULE_NEW.INC /
+
+--WELSPECS
+----name grp    I   J     depth   phase   rad
+--  P1	OP   1     100  3300    OIL     -1  /
+--  P2	OP   1     1    3300	OIL		-1	/
+--  P3	OP   100   1    3300	OIL		-1	/
+--  I1 	WI   100   100  3300 	WATER 	-1	/
+--/
+--
+--COMPDAT
+----name   I     J    Kup Klow  Flag   diam
+--  P1	 1       100   1	1	  OPEN	2*  0.583 	/
+--  P2	 1       1     1	1	  OPEN	2*  0.583 	/	 
+--  P3	 100     1     1	1	  OPEN	2*  0.583 	/
+--  I1 	 100     100   1	1 	  OPEN 	2*  0.583 	/
+--/
+--
+--WCONPROD
+----name flag  cntrl  OratT WatT  GasT  LiqT   ResvT  BHPT  THPT
+--P2   OPEN   BHP   5000              4*             1300  /
+--P1   OPEN   BHP   5000              4*             1300  /
+--P3   OPEN   BHP   5000              4*             1300  /
+--/
+--
+--WCONINJE
+----name  type   flag   cntrl   pres/surfaceQ --1500
+--I1   WATER    OPEN    RATE   2500  /
+---- I2   WATER    OPEN    RATE   5000  /
+--/
+--
+----******************************************* Prediction
+--
+--DATES
+--1  JUL  2014 /
+--1  JAN  2015 /
+--1  JUL  2015 /
+--1  JAN  2016 /
+--1  JUL  2016 /
+--1  JAN  2017 /
+--1  JUL  2017 /
+--1  JAN  2018 /
+--1  JUL  2018 /
+--1  JAN  2019 /
+--1  JUL  2019 /
+--1  JAN  2020 /
+--1  JUL  2020 /
+--1  JAN  2021 /
+--1  JUL  2021 /
+--1  JAN  2022 /
+--1  JUL  2022 /
+--1  JAN  2023 /
+--1  JUL  2023 /
+--1  JAN  2024 /
+--1  JUL  2024 /
+--1  JAN  2025 /
+--1  JUL  2025 /
+--1  JAN  2026 /
+--1  JUL  2026 /
+--/
+--
+--
+----TUNING 
+----	/
+----	/
+----2* 50 /
+--
+--
+
+
+END
+ 
+
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
