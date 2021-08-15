@@ -10,10 +10,17 @@ The procedure can be explained in the following steps:
 3. Following the completion of data collection, we then train our proxy. The proxy is built using PyTorch Lightning PyTorch-based wrapper. The model is trained based on 200 examples with the rest, 100 examples, set for validation. The following figures show the predictive capability of the model by comparing with True values, expressed via Root Mean Squared Error (RMSE) and R2 score. Please note both true and predicted values are normalized betweet 0 and 1. 
 
 RMSE
+
 | Training set      | Validation set     |
 |------------|-------------|
 | <img src="https://github.com/ncuxomun/Optimization-project/blob/master/train_npv.png" > | <img src="https://github.com/ncuxomun/Optimization-project/blob/master/val_npv.png"> |
+ 
 R2
+  
 | Training set      | Validation set     |
 |------------|-------------|
 | <img src="https://github.com/ncuxomun/Optimization-project/blob/master/train_x_x.png" > | <img src="https://github.com/ncuxomun/Optimization-project/blob/master/val_x_x.png"> |
+
+4. Once the training is completed, the newly optimized controls are then fed into a reservoir simulator which then returns a corresponding NPV value. This process is necessary because "the optimized" controls fall out of the training dataset that most likely be overestimated by the proxy.
+
+5. The process is then continued by adding new samples into the data bank. The proxy's training is then conducted with the new data bank - to improve the model's predictive ability to prevent overestimation. The computation continues until there is no longer (reasonably large) difference between the proxy and reservoir simulator NPV values.
